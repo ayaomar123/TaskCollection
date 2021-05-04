@@ -40,8 +40,8 @@ class ReduceController extends Controller
             ['name' => "Kyle" , 'department' => 'Engineering'],
         ];
 
-//        return collect($employees)->groupBy('department')->map(function ($people) {
-//            return $people->count();
+//        return collect($employees)->groupBy('department')->map(function ($employee) {
+//            return $employee->count();
 //        });
 
         return collect($employees)->countBy(function ($item) {
