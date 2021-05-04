@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\ReduceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,10 @@ Route::get('get_the_part_time_employees', [CollectionController::class, 'get_the
 Route::get('priceIncets', [CollectionController::class, 'priceIncets']);
 Route::get('test_get_products_in_stock', [CollectionController::class, 'test_get_products_in_stock']);
 Route::get('test_get_cities_with_more_than_120_000_people', [CollectionController::class, 'test_get_cities_with_more_than_120_000_people']);
+
+
+
+
+Route::get('reduce', [ReduceController::class, 'reduce']);
+Route::get('reduceEmails', [ReduceController::class, 'reduceEmails']);
+Route::get('Count', [ReduceController::class, 'Count']);
