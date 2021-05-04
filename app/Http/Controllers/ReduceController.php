@@ -11,8 +11,8 @@ class ReduceController extends Controller
             1,2,3,4,5,6
         ];
         $total = collect($num)->reduce(function ($carry, $item) {
-            return $carry + $item;
-        },699);
+            return $carry * $item;
+        },1);
         return $total;
     }
 
@@ -30,7 +30,7 @@ class ReduceController extends Controller
         return $email;
     }
 
-    public function Count(){
+    public function departmentCounts(){
         $employees = [
             ['name' => "John" , 'department' => 'Sales'],
             ['name' => "Jane" , 'department' => 'Marketing'],
@@ -40,14 +40,26 @@ class ReduceController extends Controller
             ['name' => "Kyle" , 'department' => 'Engineering'],
         ];
 
-
-        $count = collect($employees)->map(function ($item) {
-            return collect($item)->reduce(function ($name, $department) {
-                $name = $department;
-            });
-
-            return $name;
+        return collect($employees)->groupBy('department')->map(function ($people) {
+            return $people->count();
         });
-        return $count;
+
+//        $departmentCounts = collect($employees)->reduce(function ($department, $employee) {
+//            $department[$employee['department']] = count($employee);
+//            return $department;
+//        });
+//        return $departmentCounts;
     }
 }
+
+
+
+
+
+
+
+//$this->assertEquals([
+//    "Sales" => 1,
+//    "Marketing"=> 3,
+//    "Engineering"=> 2
+//]);

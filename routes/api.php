@@ -28,4 +28,4 @@ Route::get('test_get_cities_with_more_than_120_000_people', [CollectionControlle
 
 Route::get('reduce', [ReduceController::class, 'reduce']);
 Route::get('reduceEmails', [ReduceController::class, 'reduceEmails']);
-Route::get('Count', [ReduceController::class, 'Count']);
+Route::get('departmentCounts', [ReduceController::class, 'departmentCounts']);
