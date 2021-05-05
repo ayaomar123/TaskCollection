@@ -23,9 +23,10 @@ class ReduceController extends Controller
           ['name'=>'Dana', 'email'=>'Dana@example.com'],
         ];
 
-        $email = collect($users)->reduce(function ($email, $employee) {
-            $email[$employee['name']] = $employee['email'];
-            return $email;
+        $email = collect($users)->reduce(function ($item, $employee) {
+//            dd($employee);
+            $item[$employee['name']] = $employee['email'];
+            return $item;
         });
         return $email;
     }
