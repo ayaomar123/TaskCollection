@@ -17,11 +17,15 @@ class NewCollectionController extends Controller
             ['name' => 'Kyle', 'department' => 'Engineering', 'email' => 'kyle8@example.com'],
         ]);
 
-        return collect($employees)->filter(function ($item){
+        /*return collect($employees)->filter(function ($item){
            return $item['department'] == 'Marketing';
         })->map(function ($data){
             return $data['email'];
-        });
+        });*/
+
+        return collect($employees)->filter(function ($item){
+            return $item['department'] == 'Marketing';
+        })->pluck('email');
 //        $this->assertEquals([
 //            'jane8@example.com',
 //            'dave1@example.com',
@@ -39,9 +43,11 @@ class NewCollectionController extends Controller
             ['product' => 'Bread',   'unit_price' => 229,  'quantity' => 2],
         ]);
 
-        return collect($shoppingCart)->map(function ($item){
+        $collection =  collect($shoppingCart)->map(function ($item){
             return $item['unit_price'] * $item['quantity'];
         })->sum();
+
+        return ['sum' => $collection];
 //        $this->assertEquals(3097, $totalPrice);
     }
 
@@ -58,6 +64,11 @@ class NewCollectionController extends Controller
             ['name' => 'Joe',   'department' => 'Marketing',    'date_of_birth' => '1978-06-13'],
         ]);
 
+        $day = "Monday";
+
+//        return $employees->filter(function ($employee) use ($day){
+//            return (new DateTime($employee['date_of_birth']))->format('l') == $day;
+//        })->values();
 
         return $employees->map(function ($item){
             $item['Day'] = (new DateTime($item['date_of_birth']))->format('l');
@@ -152,26 +163,34 @@ class NewCollectionController extends Controller
             ]
         ]);
 
-//        $count= $posts->map(function ($item){
-//            return collect($item['comments'])->map(function ($item) {
-//                return ($item['user']);
+        $data['countDanaSmith'] = $this->commentCount($posts, 'Dana Smith');
+        $data['countBobJones'] = $this->commentCount($posts, 'Bob Jones');
+        $data['countKyleJohnson'] = $this->commentCount($posts, 'Kyle Johnson');
+        $data['countJaneSmith'] =$this->commentCount($posts, 'Jane Smith');
+        return $data;
+//        $grouped = $posts->map(function ($item) {
+//            return collect($item['comments'])->countBy(function ($item){
+//                return $item['user'];
 //            });
 //        });
-//       return ($count);
+//
+//        return collect($grouped);
 
-        $grouped = $posts->map(function ($item) {
-            return ($item['comments']);
-        });
-        return $grouped;
 
-        return $grouped->groupBy('user')->map(function ($employee) {
-            return $employee->count();
-        });
+
 
 
        /* $this->assertEquals(1, $this->countCommentsFor($posts, 'Jane Smith'));
         $this->assertEquals(4, $this->countCommentsFor($posts, 'Bob Jones'));
         $this->assertEquals(3, $this->countCommentsFor($posts, 'Kyle Johnson'));
         $this->assertEquals(3, $this->countCommentsFor($posts, 'Dana Smith'));*/
+    }
+
+    private function commentCount($posts , $user)
+    {
+        return $posts->pluck('comments')->flatten(1)->filter(function ($comment) use ($user){
+            return $comment['user'] == $user;
+        })->count();
+
     }
 }
